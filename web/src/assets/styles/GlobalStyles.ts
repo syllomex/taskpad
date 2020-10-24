@@ -37,4 +37,21 @@ export const GlobalStyles = createGlobalStyle`
 	button {
 		cursor: pointer;
 	}
+
+	.overlay {
+		position: fixed;
+		left: 0;
+		top: 0;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		width: 100vw;
+		height: 100vh;
+
+		z-index: 5;
+
+		background-color: rgba(0, 0, 0, 0.7);
+	}
 `;
