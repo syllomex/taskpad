@@ -3,14 +3,16 @@ import React from 'react';
 import { ActivePageIcon, Container, PageIcon, PageName } from './styles';
 
 interface Props {
-	active?: boolean;
+	id: string;
 	title: string;
+	active?: boolean;
 	onClick: React.Dispatch<string>;
+	onRightClick: React.Dispatch<string>;
 }
 
-const PageItem: React.FC<Props> = ({ active, title, onClick }) => {
+const PageItem: React.FC<Props> = ({ id, active, title, onClick, onRightClick }) => {
 	return (
-		<Container onClick={() => onClick(title)}>
+		<Container onContextMenu={() => onRightClick(id)} onClick={() => onClick(id)}>
 			{active ? <ActivePageIcon /> : <PageIcon />}
 			<PageName>{title}</PageName>
 		</Container>

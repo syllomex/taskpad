@@ -1,48 +1,35 @@
-import React, { useState } from 'react';
+import React from 'react';
+
 import PageItem from '../PageItem';
+
+import { usePage } from '../../store/pages';
 
 import { Container, Footer, PagesContainer, Wrapper } from './styles';
 
 const SideNav: React.FC = () => {
-	const [activePage, setActivePage] = useState('Página 1');
+	const { pages, activePage, selectPage, createPage, removePage } = usePage();
 
 	return (
 		<Wrapper>
 			<Container>
 				<PagesContainer>
-					{pages.map(page => <PageItem key={page} title={page} active={activePage === page} onClick={setActivePage} />)}
+					{pages.map((page) => (
+						<PageItem
+							key={page.id}
+							id={page.id}
+							title={page.title}
+							active={activePage === page.id}
+							onClick={selectPage}
+							onRightClick={removePage}
+						/>
+					))}
 				</PagesContainer>
 			</Container>
 			<Footer>
-				Footer
+				<button type="button" onClick={createPage}>Nova Página</button>
 			</Footer>
 		</Wrapper>
 	);
 };
-
-const pages = [
-	'Página 1',
-	'Página 2',
-	'Página 3',
-	'Página 4',
-	'Página 5',
-	'Página 6',
-	'Página 7',
-	'Página 8',
-	'Página 9',
-	'Página 10',
-	'Página 11',
-	'Página 12',
-	'Página 13',
-	'Página 14',
-	'Página 15',
-	'Página 16',
-	'Página 17',
-	'Página 18',
-	'Página 19',
-	'Página 20',
-	'Página 21',
-	'Página 22',
-];
 
 export default SideNav;
