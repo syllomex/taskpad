@@ -31,5 +31,10 @@ export const GlobalStyles = createGlobalStyle`
 	button, input, textarea {
 		outline: 0;
 		border: 0;
+		background-color: transparent;
+	}
+
+	button {
+		cursor: pointer;
 	}
 `;
