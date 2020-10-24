@@ -10,9 +10,18 @@ interface Props {
 	onRightClick: React.Dispatch<string>;
 }
 
-const PageItem: React.FC<Props> = ({ id, active, title, onClick, onRightClick }) => {
+const PageItem: React.FC<Props> = ({
+	id,
+	active,
+	title,
+	onClick,
+	onRightClick,
+}) => {
 	return (
-		<Container onContextMenu={() => onRightClick(id)} onClick={() => onClick(id)}>
+		<Container
+			onContextMenu={() => onRightClick(id)}
+			onClick={() => onClick(id)}
+		>
 			{active ? <ActivePageIcon /> : <PageIcon />}
 			<PageName>{title}</PageName>
 		</Container>
