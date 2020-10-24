@@ -81,10 +81,10 @@ const usePage = () => {
 		localStorage.removeItem('active_page');
 	};
 
-	const createPage = () => {
+	const createPage = (title: string) => {
 		const page: Page = {
 			id: uuid(),
-			title: 'Nova Página',
+			title,
 		};
 
 		const newPages = [...pages, page];
