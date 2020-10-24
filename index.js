@@ -16,6 +16,7 @@ function createWindow() {
 
 	window.setMenu(null);
 	window.maximize();
+	window.webContents.openDevTools();
 
 	if (isDev) {
 		window.loadURL("http://localhost:25554");
