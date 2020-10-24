@@ -1,22 +1,16 @@
-import React from "react";
-import template from "./assets/images/template.png";
+import React from 'react';
 
-import "./app.css";
+import './app.css';
+import { GlobalStyles } from './assets/styles/GlobalStyles';
+import { Routes } from './routes';
 
 function App() {
-  return (
-    <div
-      style={{
-        height: "100vh",
-        width: "100vw",
-        background: `url(${template})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "contain",
-        backgroundPositionY: "center",
-        backgroundColor: "#282C34",
-      }}
-    ></div>
-  );
+	return (
+		<>
+			<Routes />
+			<GlobalStyles />
+		</>
+	);
 }
 
 export default App;
