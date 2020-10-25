@@ -5,10 +5,15 @@ import PageItem from '../PageItem';
 import { usePage } from '../../store/pages';
 
 import { Container, Footer, PagesContainer, Wrapper } from './styles';
+
 import NewPageModal from '../NewPageModal';
+import IconButton from '../IconButton';
+
+import newPage from '../../assets/icons/new-page.svg';
+import newPageActive from '../../assets/icons/new-page-active.svg';
 
 const SideNav: React.FC = () => {
-	const { pages, activePage, selectPage, createPage, removePage } = usePage();
+	const { pages, activePage, selectPage, removePage } = usePage();
 
 	const [newPageModal, setNewPageModal] = useState(false);
 
@@ -29,16 +34,22 @@ const SideNav: React.FC = () => {
 				</PagesContainer>
 			</Container>
 			<Footer>
-				<button type="button" onClick={() => setNewPageModal(true)}>
-					Nova Página
-				</button>
+				<IconButton
+					activeIcon={newPageActive}
+					inactiveIcon={newPage}
+					onClick={() => setNewPageModal(true)}
+					imageStyle={ButtonStyle}
+				/>
 			</Footer>
 
-			{newPageModal && (
-				<NewPageModal state={newPageModal} setState={setNewPageModal} />
-			)}
+			<NewPageModal state={newPageModal} setState={setNewPageModal} />
 		</Wrapper>
 	);
+};
+
+const ButtonStyle = {
+	width: '48px',
+	height: '48px',
 };
 
 export default SideNav;

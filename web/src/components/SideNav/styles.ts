@@ -8,6 +8,7 @@ export const Wrapper = styled.div`
 	&:hover {
 		div.footer {
 			height: 60px;
+			align-items: center;
 		}
 
 		div.container {
@@ -61,6 +62,9 @@ export const PagesContainer = styled.div`
 `;
 
 export const Footer = styled.div.attrs({ className: 'footer' })`
+	display: flex;
+	justify-content: space-around;
+
 	width: 100%;
 	height: 0;
 

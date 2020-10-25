@@ -1,8 +1,12 @@
-import React, { FormEvent, useEffect, useLayoutEffect, useRef } from 'react';
-import { usePage } from '../../store/pages';
-import Button from '../Button';
+import React from 'react';
 
-import { Container, Input, Title } from './styles';
+import { usePage } from '../../store/pages';
+
+import Form from '../Form';
+import Input from '../Input';
+import Modal from '../Modal';
+
+import { Title, AddButton, CancelButton } from './styles';
 
 interface Props {
 	state: boolean;
@@ -10,51 +14,29 @@ interface Props {
 }
 
 const NewPageModal: React.FC<Props> = ({ state, setState }) => {
-	const titleInputRef = useRef<HTMLInputElement>(null);
-
 	const { createPage } = usePage();
 
-	useLayoutEffect(() => {
-		titleInputRef.current?.focus();
-		titleInputRef.current?.select();
-	}, []);
-
-	useEffect(() => {
-		function listener(event: KeyboardEvent) {
-			if (event.key === 'Escape') setState(false);
-		}
-
-		window.addEventListener('keydown', listener, false);
-
-		return () => {
-			window.removeEventListener('keydown', listener, false);
-		};
-	}, []);
-
-	function handleSubmit(e: FormEvent) {
-		e.preventDefault();
-		createPage(titleInputRef.current?.value || 'Nova página');
-		if (titleInputRef.current?.value) {
-			titleInputRef.current.value = '';
-		}
+	function handleData(data: { title: string }) {
+		createPage(data.title);
 		setState(false);
 	}
 
 	return (
-		<>
-			<div className="overlay" onClick={() => setState(false)} />
-			<Container>
-				<form onSubmit={handleSubmit}>
-					<Title>Adicionar nova página</Title>
-					<Input
-						ref={titleInputRef}
-						defaultValue="Nova página"
-						placeholder="Título"
-					/>
-					<Button type="submit">Adicionar</Button>
-				</form>
-			</Container>
-		</>
+		<Modal state={state} setState={setState}>
+			<Form handleData={handleData}>
+				<Title>Criar Página</Title>
+				<Input
+					defaultValue="Nova página"
+					placeholder="Título"
+					name="title"
+					autoSelect
+				/>
+				<AddButton type="submit">Criar</AddButton>
+				<CancelButton type="button" onClick={() => setState(false)}>
+					Voltar
+				</CancelButton>
+			</Form>
+		</Modal>
 	);
 };
 
