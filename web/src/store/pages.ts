@@ -16,7 +16,7 @@ import {
 } from '../utils/storage';
 
 export interface Line {
-	index: number;
+	position: number;
 	text?: string;
 	checked?: boolean;
 }
