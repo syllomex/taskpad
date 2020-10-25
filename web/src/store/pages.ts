@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import {
 	getNextPage,
+	getPageIndex,
 	getPreviousPage,
 	hasNextPage,
 	hasPreviousPage,
@@ -115,6 +116,20 @@ const usePage = () => {
 		savePagesInStorage(newPages);
 	};
 
+	const changeTitle = (page: Page, title: string) => {
+		const pageIndex = getPageIndex(page, pages);
+		const currentPages = [...pages];
+
+		currentPages[pageIndex] = {
+			...currentPages[pageIndex],
+			title,
+		};
+
+		setPages(currentPages);
+		savePagesInStorage(currentPages);
+		selectPage(currentPages[pageIndex]);
+	};
+
 	return {
 		pages,
 		setPages,
@@ -123,6 +138,7 @@ const usePage = () => {
 		selectPage,
 		createPage,
 		removePage,
+		changeTitle,
 	};
 };
 

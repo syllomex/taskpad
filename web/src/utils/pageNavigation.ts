@@ -30,3 +30,8 @@ export function getPageById(page_id: string, pages: Page[]): Page {
 	const pageIndex = pages.findIndex((page) => page.id === page_id);
 	return pages[pageIndex];
 }
+
+export function getPageIndex(page: Page, pages: Page[]): number {
+	const pageIndex = pages.findIndex((curPage) => curPage.id === page.id);
+	return pageIndex;
+}
