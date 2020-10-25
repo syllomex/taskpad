@@ -1,7 +1,6 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
-const url = require("url");
 
 function createWindow() {
 	const window = new BrowserWindow({
@@ -15,20 +14,14 @@ function createWindow() {
 	});
 
 	window.setMenu(null);
-	window.maximize();
-	window.webContents.openDevTools();
 
 	if (isDev) {
 		window.loadURL("http://localhost:25554");
+		window.maximize();
+		window.webContents.openDevTools();
 	} else {
 		const webPath = path.join(__dirname, "web", "build", "index.html");
-		window.loadURL(
-			url.format({
-				pathname: webPath,
-				protocol: "file:",
-				slashes: true,
-			})
-		);
+		window.loadFile(webPath);
 	}
 }
 
