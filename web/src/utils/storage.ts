@@ -25,9 +25,10 @@ function savePagesInStorage(pages: Page[]) {
 	localStorage.setItem('pages', jsonPages);
 }
 
-function getActivePageFromStorage() {
-	const activePage = localStorage.getItem('active_page');
-	return activePage;
+function getActivePageFromStorage(pages: Page[]): Page {
+	const activePageId = localStorage.getItem('active_page');
+	const activePageIndex = pages.findIndex((page) => page.id === activePageId);
+	return pages[activePageIndex];
 }
 
 function saveActivePageInStorage(pageId: string) {

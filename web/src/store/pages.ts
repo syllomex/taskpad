@@ -1,10 +1,10 @@
 import { createContext, useContext, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import {
+	getNextPage,
+	getPreviousPage,
 	hasNextPage,
 	hasPreviousPage,
-	nextPageId,
-	previousPageId,
 } from '../utils/pageNavigation';
 
 import {
@@ -29,15 +29,15 @@ export interface Page {
 interface IPageContext {
 	pages: Page[];
 	setPages: React.Dispatch<Page[]>;
-	activePage: string;
-	setActivePage: React.Dispatch<string>;
+	activePage: Page | null;
+	setActivePage: React.Dispatch<Page | null>;
 }
 
 const PageContext = createContext({} as IPageContext);
 
 const PageProvider = (): IPageContext => {
 	const [pages, setPages] = useState([] as Page[]);
-	const [activePage, setActivePage] = useState<string>();
+	const [activePage, setActivePage] = useState<Page | null>(null);
 
 	const [isLoaded, setIsLoaded] = useState(false);
 
@@ -46,9 +46,9 @@ const PageProvider = (): IPageContext => {
 		setPages(storagePages);
 
 		if (storagePages.length > 0) {
-			const activePage = getActivePageFromStorage();
+			const activePage = getActivePageFromStorage(pages);
 			if (!activePage) {
-				setActivePage(storagePages[0].id);
+				setActivePage(storagePages[0]);
 				saveActivePageInStorage(storagePages[0].id);
 			} else {
 				setActivePage(activePage);
@@ -61,7 +61,7 @@ const PageProvider = (): IPageContext => {
 	return {
 		pages,
 		setPages,
-		activePage: activePage || 'undefined',
+		activePage,
 		setActivePage,
 	};
 };
@@ -71,13 +71,13 @@ const usePage = () => {
 		PageContext
 	);
 
-	const selectPage = (page_id: string) => {
-		setActivePage(page_id);
-		saveActivePageInStorage(page_id);
+	const selectPage = (page: Page) => {
+		setActivePage(page);
+		saveActivePageInStorage(page.id);
 	};
 
 	const clearSelectedPage = () => {
-		setActivePage('undefined');
+		setActivePage(null);
 		localStorage.removeItem('active_page');
 	};
 
@@ -91,7 +91,7 @@ const usePage = () => {
 
 		setPages(newPages);
 		savePagesInStorage(newPages);
-		selectPage(page.id);
+		selectPage(page);
 	};
 
 	const removePage = (page_id: string) => {
@@ -103,11 +103,11 @@ const usePage = () => {
 			return false;
 		});
 
-		if (activePage === page_id) {
+		if (activePage?.id === page_id) {
 			if (hasNextPage(pages, removedIndex))
-				selectPage(nextPageId(pages, removedIndex));
+				selectPage(getNextPage(removedIndex, pages));
 			else if (hasPreviousPage(pages, removedIndex))
-				selectPage(previousPageId(pages, removedIndex));
+				selectPage(getPreviousPage(removedIndex, pages));
 			else clearSelectedPage();
 		}
 

@@ -26,6 +26,11 @@ export const Container = styled.div.attrs({ className: 'page-item' })`
 `;
 
 export const PageName = styled.span.attrs({ className: 'page-name' })`
+	display: block;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+
 	margin-left: 8px;
 	font-size: 1.1rem;
 

@@ -26,8 +26,8 @@ const SideNav: React.FC = () => {
 							key={page.id}
 							id={page.id}
 							title={page.title}
-							active={activePage === page.id}
-							onClick={selectPage}
+							active={activePage?.id === page.id}
+							onClick={() => selectPage(page)}
 							onRightClick={removePage}
 						/>
 					))}
