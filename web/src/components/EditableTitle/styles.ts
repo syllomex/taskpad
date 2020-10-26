@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Title = styled.h1`
 	cursor: pointer;
-	padding: 1rem 2rem;
+	padding: 1rem 3rem;
 
 	&:focus {
 		cursor: unset;
@@ -15,4 +15,6 @@ export const Title = styled.h1`
 		opacity: 0.6;
 		background-color: var(--background-secondary);
 	}
+
+	margin-bottom: 1.5rem;
 `;
