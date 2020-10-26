@@ -1,4 +1,5 @@
 import React from 'react';
+import downloadData from '../../utils/downloadData';
 
 import {
 	Container,
@@ -15,12 +16,7 @@ const Splash: React.FC = () => {
 		if (!json) return;
 
 		const pages = JSON.parse(json);
-		const data = new Blob([JSON.stringify(pages, null, 2)], { type: json });
-		const a = document.createElement('a');
-		a.href = URL.createObjectURL(data);
-		a.download = 'pages.json';
-		a.click();
-		a.remove();
+		downloadData(pages);
 	}
 
 	return (
