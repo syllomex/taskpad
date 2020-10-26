@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import {
 	getNextPage,
+	getPageById,
 	getPageIndex,
 	getPreviousPage,
 	hasNextPage,
@@ -9,8 +10,9 @@ import {
 } from '../utils/pageNavigation';
 
 import {
-	getActivePageFromStorage,
+	getActivePageIdFromStorage,
 	getPagesFromStorage,
+	removeActivePageFromStorage,
 	saveActivePageInStorage,
 	savePagesInStorage,
 } from '../utils/storage';
@@ -24,7 +26,7 @@ export interface Line {
 export interface Page {
 	id: string;
 	title: string;
-	content?: Line[];
+	content: Line[];
 }
 
 interface IPageContext {
@@ -47,12 +49,14 @@ const PageProvider = (): IPageContext => {
 		setPages(storagePages);
 
 		if (storagePages.length > 0) {
-			const activePage = getActivePageFromStorage(pages);
-			if (!activePage) {
-				setActivePage(storagePages[0]);
-				saveActivePageInStorage(storagePages[0].id);
-			} else {
-				setActivePage(activePage);
+			const storageActivePageId = getActivePageIdFromStorage();
+
+			if (storageActivePageId) {
+				const storageActivePage = getPageById(
+					storageActivePageId,
+					storagePages
+				);
+				setActivePage(storageActivePage);
 			}
 		}
 
@@ -72,9 +76,10 @@ const usePage = () => {
 		PageContext
 	);
 
-	const selectPage = (page: Page) => {
+	const selectPage = (page: Page | null) => {
 		setActivePage(page);
-		saveActivePageInStorage(page.id);
+		if (page) saveActivePageInStorage(page.id);
+		else removeActivePageFromStorage();
 	};
 
 	const clearSelectedPage = () => {
@@ -86,6 +91,7 @@ const usePage = () => {
 		const page: Page = {
 			id: uuid(),
 			title,
+			content: [],
 		};
 
 		const newPages = [...pages, page];
@@ -130,6 +136,16 @@ const usePage = () => {
 		selectPage(currentPages[pageIndex]);
 	};
 
+	const setPageLines = (lines: Line[], page: Page) => {
+		const pageIndex = getPageIndex(page, pages);
+		const currentPages = [...pages];
+
+		currentPages[pageIndex].content = lines;
+
+		setPages(currentPages);
+		savePagesInStorage(currentPages);
+	};
+
 	return {
 		pages,
 		setPages,
@@ -139,6 +155,7 @@ const usePage = () => {
 		createPage,
 		removePage,
 		changeTitle,
+		setPageLines,
 	};
 };
 

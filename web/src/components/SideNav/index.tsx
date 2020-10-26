@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import PageItem from '../PageItem';
 
@@ -11,11 +11,31 @@ import IconButton from '../IconButton';
 
 import newPage from '../../assets/icons/new-page.svg';
 import newPageActive from '../../assets/icons/new-page-active.svg';
+import home from '../../assets/icons/home.svg';
+import homeActive from '../../assets/icons/home-active.svg';
 
 const SideNav: React.FC = () => {
-	const { pages, activePage, selectPage, removePage } = usePage();
+	const {
+		pages,
+		activePage,
+		selectPage,
+		removePage,
+	} = usePage();
 
 	const [newPageModal, setNewPageModal] = useState(false);
+
+	const newPageShortcutListener = (e: KeyboardEvent) => {
+		console.log('event');
+		if (!e.ctrlKey) return;
+		if (e.key.toLowerCase() === 'n') setNewPageModal(true);
+	};
+	useEffect(() => {
+		window.addEventListener('keydown', newPageShortcutListener);
+
+		return () => {
+			window.removeEventListener('keydown', newPageShortcutListener);
+		};
+	}, []);
 
 	return (
 		<Wrapper>
@@ -35,10 +55,17 @@ const SideNav: React.FC = () => {
 			</Container>
 			<Footer>
 				<IconButton
+					activeIcon={homeActive}
+					inactiveIcon={home}
+					imageStyle={ButtonStyle}
+					onClick={() => selectPage(null)}
+				/>
+				<IconButton
 					activeIcon={newPageActive}
 					inactiveIcon={newPage}
 					onClick={() => setNewPageModal(true)}
 					imageStyle={ButtonStyle}
+					title="Atalho: Ctrl + N"
 				/>
 			</Footer>
 
