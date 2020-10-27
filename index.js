@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, Tray, Menu } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
 
@@ -14,6 +14,30 @@ function createWindow() {
 		title: 'TaskPad',
 	});
 
+	const tray = new Tray(
+		path.resolve(__dirname, 'web', 'src', 'assets', 'icons', 'icon.png')
+	);
+
+	const contextMenu = Menu.buildFromTemplate([
+		{ label: 'Abrir', type: 'normal', click: () => window.show() },
+		{ type: 'separator' },
+		{
+			label: 'Sair',
+			type: 'normal',
+			click: () => {
+				app.isQuiting = true;
+				app.quit();
+			},
+		},
+	]);
+
+	tray.on('click', () => {
+		window.maximize();
+	});
+	tray.setTitle('TaskPad');
+	tray.setToolTip('TaskPad');
+	tray.setContextMenu(contextMenu);
+
 	window.setMenu(null);
 
 	if (isDev) {
@@ -24,6 +48,15 @@ function createWindow() {
 		const webPath = path.join(__dirname, 'web', 'build', 'index.html');
 		window.loadFile(webPath);
 	}
+
+	window.on('close', function (event) {
+		if (!app.isQuiting) {
+			event.preventDefault();
+			window.hide();
+		}
+
+		return false;
+	});
 }
 
 app.whenReady().then(createWindow);
