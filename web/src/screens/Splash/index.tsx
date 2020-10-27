@@ -1,5 +1,6 @@
-import React from 'react';
-import downloadData from '../../utils/downloadData';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Page, usePage } from '../../store/pages';
+import downloadData, { uploadData } from '../../utils/backup';
 
 import {
 	Container,
@@ -11,6 +12,10 @@ import {
 } from './styles';
 
 const Splash: React.FC = () => {
+	const [uploadContent, setUploadContent] = useState<Page[] | null>(null);
+
+	const {setPages} = usePage();
+
 	function handleClickBackup() {
 		const json = localStorage.getItem('pages');
 		if (!json) return;
@@ -18,6 +23,16 @@ const Splash: React.FC = () => {
 		const pages = JSON.parse(json);
 		downloadData(pages);
 	}
+
+	function handleUpload(e: ChangeEvent<HTMLInputElement>) {
+		if (!e.currentTarget.files) return
+		uploadData(e.currentTarget.files[0], setUploadContent);
+	}
+
+	useEffect(() => {
+		if (!uploadContent) return;
+		setPages(uploadContent);
+	}, [uploadContent])
 
 	return (
 		<Container>
@@ -30,6 +45,7 @@ const Splash: React.FC = () => {
 			</SubTitle>
 			<Link>Ver lista de atalhos</Link>
 			<Link onClick={handleClickBackup}>Fazer backup</Link>
+			<input type="file" name="backup" id="backup" onChange={handleUpload} />
 		</Container>
 	);
 };
