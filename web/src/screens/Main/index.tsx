@@ -1,27 +1,20 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { DragEvent, useLayoutEffect, useRef } from 'react';
+import { v4 } from 'uuid';
 
 import EditableTitle from '../../components/EditableTitle';
+import Line from '../../components/Line';
 import SideNav from '../../components/SideNav';
 
 import { usePage } from '../../store/pages';
 
 import Splash from '../Splash';
 
-import {
-	CheckBox,
-	CheckIcon,
-	Container,
-	EditableBox,
-	Line as StyledLine,
-	LineContainer,
-	Wrapper,
-} from './styles';
+import { Container, EditableBox, Wrapper } from './styles';
 
 const Main: React.FC = () => {
-	const { setPageLines, activePage } = usePage();
+	const { setPageLines, activePage, setLineToEnd } = usePage();
 
 	const editableBoxRef = useRef<HTMLDivElement>(null);
-	const lastLineRef = useRef<HTMLSpanElement>(null);
 
 	function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
 		if (e.shiftKey) return;
@@ -34,10 +27,7 @@ const Main: React.FC = () => {
 			setPageLines(
 				[
 					...activePage.content,
-					{
-						text: editableBoxRef.current.innerText,
-						position: activePage.content.length + 1,
-					},
+					{ id: v4(), text: editableBoxRef.current.innerText },
 				],
 				activePage
 			);
@@ -45,45 +35,20 @@ const Main: React.FC = () => {
 		}
 	}
 
-	function handleLineKeyDown(
-		e: React.KeyboardEvent<HTMLSpanElement>,
-		index: number
-	) {
-		if (e.key === 'Backspace' && !e.currentTarget.innerText) {
-			if (!activePage) return;
-			const currentLines = [...activePage.content];
-			currentLines.splice(index, 1);
-
-			setPageLines(currentLines, activePage);
-		}
-
-		if (e.shiftKey) return;
-
-		if (e.key === 'Enter') {
-			e.preventDefault();
-
-			if (!activePage) return;
-
-			const text = e.currentTarget.innerText;
-			activePage.content[index].text = text;
-
-			e.currentTarget.blur();
-			editableBoxRef.current?.focus();
-		}
+	function focusTextBox() {
+		if (!editableBoxRef.current || !activePage) return;
+		editableBoxRef.current.focus();
 	}
 
-	function handleCheck(line_index: number) {
-		if (!activePage) return;
-		const currentLines = [...activePage.content];
-		currentLines[line_index].checked = !currentLines[line_index].checked;
-		setPageLines(currentLines, activePage);
+	function handleDrop(e: DragEvent<HTMLDivElement>) {
+		e.preventDefault();
+		const lineId = e.dataTransfer.getData('text/plain');
+		setLineToEnd(lineId);
 	}
 
 	useLayoutEffect(() => {
-		if (!editableBoxRef.current || !activePage) return;
-
-		editableBoxRef.current.focus();
-	}, [activePage]);
+		focusTextBox();
+	}, [activePage]); // eslint-disable-line
 
 	return (
 		<Wrapper>
@@ -93,20 +58,12 @@ const Main: React.FC = () => {
 					<EditableTitle />
 
 					{activePage?.content?.map((line, index) => (
-						<LineContainer key={index}>
-							<CheckBox onClick={() => handleCheck(index)}>
-								{line.checked && <CheckIcon />}
-							</CheckBox>
-							<StyledLine
-								isChecked={line.checked}
-								onKeyDown={(e) => handleLineKeyDown(e, index)}
-								ref={
-									index === activePage.content.length - 1 ? lastLineRef : null
-								}
-							>
-								{line.text}
-							</StyledLine>
-						</LineContainer>
+						<Line
+							key={index}
+							line={line}
+							index={index}
+							focusTextBox={focusTextBox}
+						/>
 					))}
 
 					{activePage && (
@@ -114,6 +71,7 @@ const Main: React.FC = () => {
 							style={{ minHeight: '100%', width: '100%' }}
 							ref={editableBoxRef}
 							onKeyDown={handleKeyDown}
+							onDrop={handleDrop}
 						/>
 					)}
 				</Container>

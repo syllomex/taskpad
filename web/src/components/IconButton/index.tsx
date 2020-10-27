@@ -32,6 +32,7 @@ const IconButton: React.FC<Props> = ({
 			onMouseLeave={handleMouseLeave}
 			onClick={onClick}
 			{...props}
+			tabIndex={-1}
 		>
 			<img ref={imageRef} src={iconUrl.current} style={imageStyle} alt="Ícone" />
 		</button>

@@ -16,4 +16,15 @@ export const Container = styled.div`
 	padding: 32px;
 
 	z-index: 10;
+
+	animation: fade-in .1s ease-in forwards;
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
 `;

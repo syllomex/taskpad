@@ -18,7 +18,7 @@ import {
 } from '../utils/storage';
 
 export interface Line {
-	position: number;
+	id: string;
 	text?: string;
 	checked?: boolean;
 }
@@ -146,6 +146,44 @@ const usePage = () => {
 		savePagesInStorage(currentPages);
 	};
 
+	const setLineAboveId = (line_id: string, above_id: string) => {
+		if (!activePage) return;
+
+		const lineIndex = activePage.content.findIndex(
+			(line) => line.id === line_id
+		);
+		const aboveLineIndex = activePage.content.findIndex(
+			(line) => line.id === above_id
+		);
+
+		const offset = lineIndex < aboveLineIndex ? 1 : 0;
+
+		const currentLines = [...activePage.content];
+		const splicedLine = currentLines.splice(lineIndex, 1)[0];
+		currentLines.splice(aboveLineIndex - offset, 0, splicedLine);
+
+		setPageLines(currentLines, activePage);
+	};
+
+	const setLineToEnd = (line_id: string) => {
+		if (!activePage) return;
+
+		const lineIndex = activePage.content.findIndex(
+			(line) => line.id === line_id
+		);
+
+		const currentLines = [...activePage.content];
+		const splicedLine = currentLines.splice(lineIndex, 1);
+
+		currentLines.push(splicedLine[0]);
+		setPageLines(currentLines, activePage);
+	};
+
+	const saveAll = () => {
+		savePagesInStorage(pages);
+		if (activePage) saveActivePageInStorage(activePage.id);
+	};
+
 	return {
 		pages,
 		setPages,
@@ -156,6 +194,9 @@ const usePage = () => {
 		removePage,
 		changeTitle,
 		setPageLines,
+		setLineAboveId,
+		setLineToEnd,
+		saveAll,
 	};
 };
 
