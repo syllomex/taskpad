@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import downloadData from '../../utils/backup';
 
 import {
 	Container,

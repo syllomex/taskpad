@@ -24,6 +24,19 @@ function getPagesFromStorage(): Page[] {
 
 	localStorage.setItem('default_page', 'true');
 
+	// let lines: Line[] = [];
+
+	// for (let i = 0; i < 1000; i++) {
+	// 	lines.push({ id: uuid(), checked: Math.random() > 0.5 ? true : false, text: uuid() });
+	// }
+
+	// let page: Page = {id: uuid(), title: uuid(), content: lines}
+	// let pages: Page[] = [];
+
+	// for (let i = 0; i < 100; i++) {
+	// 	pages.push({...page, id: uuid()});
+	// }
+
 	return pages;
 }
 

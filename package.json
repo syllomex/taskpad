@@ -1,5 +1,5 @@
 {
-	"name": "taskpad",
+	"name": "TaskPad",
 	"version": "1.0.0",
 	"description": "It is a kind of notepad",
 	"main": "index.js",
@@ -30,6 +30,9 @@
 		"url": "^0.11.0"
 	},
 	"build": {
-		"appId": "com.leonardosantos.taskpad"
+		"appId": "com.leonardosantos.taskpad",
+		"win": {
+			"icon": "./icon.png"
+		}
 	}
 }

@@ -8,7 +8,6 @@ import { Container, Footer, PagesContainer, Wrapper } from './styles';
 
 import NewPageModal from '../NewPageModal';
 import IconButton from '../IconButton';
-import Settings from '../Settings';
 
 import newPage from '../../assets/icons/new-page.svg';
 import newPageActive from '../../assets/icons/new-page-active.svg';

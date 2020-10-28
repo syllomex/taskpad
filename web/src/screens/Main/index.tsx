@@ -3,7 +3,6 @@ import { v4 } from 'uuid';
 
 import EditableTitle from '../../components/EditableTitle';
 import Line from '../../components/Line';
-import SideNav from '../../components/SideNav';
 
 import { usePage } from '../../store/pages';
 
