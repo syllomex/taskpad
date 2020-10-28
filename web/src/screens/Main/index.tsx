@@ -7,7 +7,7 @@ import SideNav from '../../components/SideNav';
 
 import { usePage } from '../../store/pages';
 
-import Splash from '../Splash';
+import Splash from '../Landing';
 
 import { Container, EditableBox, Wrapper } from './styles';
 
@@ -52,7 +52,6 @@ const Main: React.FC = () => {
 
 	return (
 		<Wrapper>
-			<SideNav />
 			{activePage && (
 				<Container>
 					<EditableTitle />

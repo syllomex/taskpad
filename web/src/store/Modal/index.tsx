@@ -1,10 +1,13 @@
 import React, {
 	forwardRef,
+	useCallback,
+	useEffect,
 	useImperativeHandle,
 	useRef,
 	useState,
 } from 'react';
 import ModalComponent from '../../components/Modal';
+import { Button, ButtonsContainer, ContentContainer } from './styles';
 
 export interface ModalHandles {
 	open: ({ title, cancelLabel, confirmLabel, content }: ModalOptions) => void;
@@ -12,11 +15,13 @@ export interface ModalHandles {
 
 export interface ModalOptions {
 	title: string;
-	confirmLabel?: string;
-	cancelLabel?: string;
+	confirmLabel?: any;
+	cancelLabel?: any;
 	content?: any;
 	onConfirm?: Function;
 	onCancel?: Function;
+	backButtonOnly?: boolean;
+	backButtonLabel?: string;
 }
 
 const Modal: React.ForwardRefRenderFunction<ModalHandles, any> = (
@@ -35,11 +40,21 @@ const Modal: React.ForwardRefRenderFunction<ModalHandles, any> = (
 	useImperativeHandle(ref, () => ({
 		open: ({
 			title = 'Título',
-			confirmLabel = 'SIM',
-			cancelLabel = 'NÃO',
+			confirmLabel = (
+				<span>
+					<u>S</u>IM
+				</span>
+			),
+			cancelLabel = (
+				<span>
+					<u>N</u>ÃO
+				</span>
+			),
 			content = '',
 			onConfirm,
 			onCancel,
+			backButtonOnly,
+			backButtonLabel = 'VOLTAR'
 		}: ModalOptions) => {
 			setModal(true);
 
@@ -50,32 +65,58 @@ const Modal: React.ForwardRefRenderFunction<ModalHandles, any> = (
 				content,
 				onConfirm,
 				onCancel,
+				backButtonOnly,
+				backButtonLabel
 			});
 		},
 	}));
 
-	function handleConfirm() {
+	const handleConfirm = useCallback(() => {
 		setModal(false);
 		if (options?.onConfirm) options.onConfirm();
-	}
+	}, [options]);
 
-	function handleCancel() {
+	const handleCancel = useCallback(() => {
 		setModal(false);
 		if (options?.onCancel) options.onCancel();
-	}
+	}, [options]);
+
+	useEffect(() => {
+		const keyListener = (event: KeyboardEvent) => {
+			if (event.key.toLowerCase() === 's') handleConfirm();
+			else if (event.key.toLowerCase() === 'n') handleCancel();
+		}
+
+		window.addEventListener('keyup', keyListener);
+
+		return () => {
+			window.removeEventListener('keyup', keyListener);
+		}
+	}, [handleConfirm, handleCancel]);
 
 	return (
 		<ModalComponent state={modal} setState={setModal} {...props}>
 			<h2 ref={titleRef}>{options?.title}</h2>
 
-			<div ref={contentRef}>{options?.content}</div>
+			<ContentContainer ref={contentRef}>{options?.content}</ContentContainer>
 
-			<button ref={btnConfirmRef} onClick={handleConfirm}>
-				{options?.confirmLabel}
-			</button>
-			<button ref={btnCancelRef} onClick={handleCancel}>
-				{options?.cancelLabel}
-			</button>
+			{!options?.backButtonOnly &&
+				<ButtonsContainer>
+					<Button ref={btnConfirmRef} onClick={handleConfirm}>
+						{options?.confirmLabel}
+					</Button>
+					<Button ref={btnCancelRef} onClick={handleCancel}>
+						{options?.cancelLabel}
+					</Button>
+				</ButtonsContainer>
+			}
+			{options?.backButtonOnly &&
+				<ButtonsContainer>
+					<Button ref={btnCancelRef} onClick={() => setModal(false)}>
+						{options?.backButtonLabel}
+					</Button>
+				</ButtonsContainer>
+			}
 		</ModalComponent>
 	);
 };

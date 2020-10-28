@@ -13,6 +13,15 @@ export const Container = styled.div`
 	width: 100%;
 
 	padding: 2rem 20%;
+
+	overflow-y: auto;
+	::-webkit-scrollbar {
+		width: 1px;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background-color: var(--primary);
+	}
 `;
 
 export const EditableBox = styled.div.attrs({

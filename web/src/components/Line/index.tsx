@@ -1,4 +1,5 @@
 import React, { DragEvent, FocusEvent, MouseEvent, useRef } from 'react';
+import { useModal } from '../../store/modal';
 import { Line as ILine, usePage } from '../../store/pages';
 
 import {
@@ -22,6 +23,7 @@ const Line: React.FC<Props> = ({ line, index, focusTextBox }) => {
 	const isDragging = useRef(false);
 
 	const { activePage, setPageLines, setLineAboveId, saveAll } = usePage();
+	const { openModal } = useModal();
 
 	function handleLineKeyDown(
 		e: React.KeyboardEvent<HTMLSpanElement>,
@@ -133,6 +135,22 @@ const Line: React.FC<Props> = ({ line, index, focusTextBox }) => {
 		isDragging.current = false;
 	}
 
+	function removeLine() {
+		if (!activePage) return;
+		const currentLines = [...activePage.content];
+		currentLines.splice(index, 1);
+
+		setPageLines(currentLines, activePage);
+	}
+
+	function handleRightClickLine() {
+		openModal({
+			title: 'Remover tarefa',
+			content: <p>Tem certeza de que deseja remover essa tarefa?</p>,
+			onConfirm: () => removeLine(),
+		});
+	}
+
 	if (!activePage) return null;
 
 	return (
@@ -143,6 +161,7 @@ const Line: React.FC<Props> = ({ line, index, focusTextBox }) => {
 			onDragLeave={removeBlueShadow}
 			id={line.id}
 			onDrop={onDrop}
+			onContextMenu={handleRightClickLine}
 		>
 			<CheckBox onClick={() => handleCheck(index)}>
 				{line.checked && <CheckIcon />}

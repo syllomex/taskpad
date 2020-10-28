@@ -1,4 +1,5 @@
 import React, { ButtonHTMLAttributes, useRef } from 'react';
+import { Button } from './styles';
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 	inactiveIcon: string;
@@ -26,7 +27,7 @@ const IconButton: React.FC<Props> = ({
 	}
 
 	return (
-		<button
+		<Button
 			type="button"
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
@@ -35,7 +36,7 @@ const IconButton: React.FC<Props> = ({
 			tabIndex={-1}
 		>
 			<img ref={imageRef} src={iconUrl.current} style={imageStyle} alt="Ícone" />
-		</button>
+		</Button>
 	);
 };
 

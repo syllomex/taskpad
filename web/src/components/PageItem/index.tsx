@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { ActivePageIcon, Container, PageIcon, PageName } from './styles';
 
@@ -22,8 +23,10 @@ const PageItem: React.FC<Props> = ({
 			onContextMenu={() => onRightClick(id)}
 			onClick={() => onClick(id)}
 		>
-			{active ? <ActivePageIcon /> : <PageIcon />}
-			<PageName>{title}</PageName>
+			<Link key={id} to="/" style={{ textDecoration: 'none', display: "flex", alignItems: "center" }}>
+				{active ? <ActivePageIcon /> : <PageIcon />}
+				<PageName>{title}</PageName>
+			</Link>
 		</Container>
 	);
 };
