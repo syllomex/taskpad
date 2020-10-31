@@ -1,13 +1,13 @@
 {
-	"name": "TaskPad",
-	"version": "1.0.0",
-	"description": "It is a kind of notepad",
+	"name": "taskpad",
+	"version": "1.0.2",
+	"description": "This is a kind of a notepad",
 	"main": "index.js",
 	"scripts": {
 		"start": "concurrently \"cd ./web && BROWSER=none yarn start\" \"wait-on http://localhost:25554 && electron .\"",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "cd web && yarn build && cd ../ && npx electron-builder --dir",
-		"build:windows": "cd web && yarn build && cd ../ && npx electron-builder --dir --windows"
+		"build": "cd web && yarn build && cd ../ && npx electron-builder --linux deb --dir",
+		"build:windows": "cd web && yarn && yarn build && cd ../ && yarn && npx electron-builder --win"
 	},
 	"repository": {
 		"type": "git",
@@ -32,6 +32,10 @@
 	"build": {
 		"appId": "com.leonardosantos.taskpad",
 		"win": {
+			"icon": "./icon.png"
+		},
+		"linux": {
+			"category": "Utility",
 			"icon": "./icon.png"
 		}
 	}

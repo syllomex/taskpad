@@ -23,7 +23,7 @@ const PageItem: React.FC<Props> = ({
 			onContextMenu={() => onRightClick(id)}
 			onClick={() => onClick(id)}
 		>
-			<Link key={id} to="/" style={{ textDecoration: 'none', display: "flex", alignItems: "center", width: '100%' }}>
+			<Link key={id} to="/" style={{ textDecoration: 'none', display: "flex", alignItems: "center", width: '100%' }} tabIndex={-1}>
 				{active ? <ActivePageIcon /> : <PageIcon />}
 				<PageName>{title}</PageName>
 			</Link>

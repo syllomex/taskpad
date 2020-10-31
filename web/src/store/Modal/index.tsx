@@ -54,7 +54,7 @@ const Modal: React.ForwardRefRenderFunction<ModalHandles, any> = (
 			onConfirm,
 			onCancel,
 			backButtonOnly,
-			backButtonLabel = 'VOLTAR'
+			backButtonLabel = 'VOLTAR',
 		}: ModalOptions) => {
 			setModal(true);
 
@@ -66,33 +66,37 @@ const Modal: React.ForwardRefRenderFunction<ModalHandles, any> = (
 				onConfirm,
 				onCancel,
 				backButtonOnly,
-				backButtonLabel
+				backButtonLabel,
 			});
 		},
 	}));
 
 	const handleConfirm = useCallback(() => {
+		if (options?.onConfirm && modal) options.onConfirm();
 		setModal(false);
-		if (options?.onConfirm) options.onConfirm();
 	}, [options]);
 
 	const handleCancel = useCallback(() => {
 		setModal(false);
-		if (options?.onCancel) options.onCancel();
+		if (options?.onCancel && modal) options.onCancel();
 	}, [options]);
 
 	useEffect(() => {
 		const keyListener = (event: KeyboardEvent) => {
 			if (event.key.toLowerCase() === 's') handleConfirm();
 			else if (event.key.toLowerCase() === 'n') handleCancel();
-		}
+		};
 
 		window.addEventListener('keyup', keyListener);
 
-		return () => {
+		if (!modal) {
 			window.removeEventListener('keyup', keyListener);
 		}
-	}, [handleConfirm, handleCancel]);
+
+		return () => {
+			window.removeEventListener('keyup', keyListener);
+		};
+	}, [handleConfirm, handleCancel, modal]);
 
 	return (
 		<ModalComponent state={modal} setState={setModal} {...props}>
@@ -100,7 +104,7 @@ const Modal: React.ForwardRefRenderFunction<ModalHandles, any> = (
 
 			<ContentContainer ref={contentRef}>{options?.content}</ContentContainer>
 
-			{!options?.backButtonOnly &&
+			{!options?.backButtonOnly && (
 				<ButtonsContainer>
 					<Button ref={btnConfirmRef} onClick={handleConfirm}>
 						{options?.confirmLabel}
@@ -109,14 +113,14 @@ const Modal: React.ForwardRefRenderFunction<ModalHandles, any> = (
 						{options?.cancelLabel}
 					</Button>
 				</ButtonsContainer>
-			}
-			{options?.backButtonOnly &&
+			)}
+			{options?.backButtonOnly && (
 				<ButtonsContainer>
 					<Button ref={btnCancelRef} onClick={() => setModal(false)}>
 						{options?.backButtonLabel}
 					</Button>
 				</ButtonsContainer>
-			}
+			)}
 		</ModalComponent>
 	);
 };

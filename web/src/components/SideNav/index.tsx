@@ -61,6 +61,7 @@ const SideNav: React.FC = () => {
 				<PagesContainer>
 					{pages.map((page) => (
 						<PageItem
+							key={page.id}
 							id={page.id}
 							title={page.title}
 							active={activePage?.id === page.id}
@@ -71,7 +72,7 @@ const SideNav: React.FC = () => {
 				</PagesContainer>
 			</Container>
 			<Footer>
-				<Link to="/">
+				<Link to="/" tabIndex={-1}>
 					<IconButton
 						activeIcon={homeActive}
 						inactiveIcon={home}
@@ -80,7 +81,7 @@ const SideNav: React.FC = () => {
 						title="Atalho: Ctrl + H"
 					/>
 				</Link>
-				<Link to="/">
+				<Link to="/" tabIndex={-1}>
 					<IconButton
 						activeIcon={newPageActive}
 						inactiveIcon={newPage}
@@ -89,7 +90,7 @@ const SideNav: React.FC = () => {
 						title="Atalho: Ctrl + N"
 					/>
 				</Link>
-				<Link to="/settings">
+				<Link to="/settings" tabIndex={-1}>
 					<IconButton
 						activeIcon={settingsActive}
 						inactiveIcon={settings}
