@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
 import PageItem from '../PageItem';
+import NewPage from '../NewPage';
+import IconButton from '../IconButton';
+import Settings from '../Settings';
 
 import { usePage } from '../../store/pages';
+import { useModal } from '../../store/modal';
 
 import { Container, Footer, PagesContainer, Wrapper } from './styles';
-
-import NewPageModal from '../NewPageModal';
-import IconButton from '../IconButton';
 
 import newPage from '../../assets/icons/new-page.svg';
 import newPageActive from '../../assets/icons/new-page-active.svg';
@@ -16,26 +19,21 @@ import homeActive from '../../assets/icons/home-active.svg';
 import settings from '../../assets/icons/settings.svg';
 import settingsActive from '../../assets/icons/settings-active.svg';
 
-import { useModal } from '../../store/modal';
-import { Link, useHistory } from 'react-router-dom';
-
 const SideNav: React.FC = () => {
 	const { pages, activePage, selectPage, removePage } = usePage();
-
 	const { openModal } = useModal();
-	const history = useHistory();
 
-	const [newPageModal, setNewPageModal] = useState(false);
+	const history = useHistory();
 
 	const newPageShortcutListener = (e: KeyboardEvent) => {
 		if (!e.ctrlKey) return;
-		if (e.key.toLowerCase() === 'n') setNewPageModal(true);
+		if (e.key.toLowerCase() === 'n') openNewPageModal();
+		if (e.key.toLowerCase() === 'o') openSettingsModal();
 		if (e.key.toLowerCase() === 'h') history.push('/');
-		if (e.key.toLowerCase() === 'o') history.push('/settings');
 	};
+
 	useEffect(() => {
 		window.addEventListener('keydown', newPageShortcutListener);
-
 		return () => {
 			window.removeEventListener('keydown', newPageShortcutListener);
 		};
@@ -52,6 +50,23 @@ const SideNav: React.FC = () => {
 				</p>
 			),
 			onConfirm: () => removePage(page_id),
+			confirmation: true,
+		});
+	};
+
+	const openNewPageModal = () => {
+		openModal({
+			content: <NewPage />,
+			confirmation: false,
+			disableShortcuts: true,
+		});
+	};
+
+	const openSettingsModal = () => {
+		openModal({
+			confirmation: false,
+			backButtonOnly: true,
+			content: <Settings />,
 		});
 	};
 
@@ -85,22 +100,19 @@ const SideNav: React.FC = () => {
 					<IconButton
 						activeIcon={newPageActive}
 						inactiveIcon={newPage}
-						onClick={() => setNewPageModal(true)}
+						onClick={openNewPageModal}
 						imageStyle={ButtonStyle}
 						title="Atalho: Ctrl + N"
 					/>
 				</Link>
-				<Link to="/settings" tabIndex={-1}>
-					<IconButton
-						activeIcon={settingsActive}
-						inactiveIcon={settings}
-						imageStyle={ButtonStyle}
-						title="Atalho: Ctrl + O"
-					/>
-				</Link>
+				<IconButton
+					onClick={openSettingsModal}
+					activeIcon={settingsActive}
+					inactiveIcon={settings}
+					imageStyle={ButtonStyle}
+					title="Atalho: Ctrl + O"
+				/>
 			</Footer>
-
-			<NewPageModal state={newPageModal} setState={setNewPageModal} />
 		</Wrapper>
 	);
 };

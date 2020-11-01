@@ -2,8 +2,6 @@ import styled from 'styled-components';
 
 import splash from '../../assets/images/splash.svg';
 
-import { Link as RouterLink } from 'react-router-dom';
-
 export const Container = styled.div`
 	display: flex;
 	justify-content: center;
@@ -38,7 +36,7 @@ export const CodeBox = styled.span`
 	padding: 0.2rem;
 `;
 
-export const Link = styled(RouterLink)`
+export const Link = styled.span`
 	cursor: pointer;
 	margin-top: 1rem;
 	text-decoration: underline;

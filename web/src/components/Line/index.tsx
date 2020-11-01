@@ -147,7 +147,8 @@ const Line: React.FC<Props> = ({ line, index, focusTextBox }) => {
 		openModal({
 			title: 'Remover tarefa',
 			content: <p>Tem certeza de que deseja remover essa tarefa?</p>,
-			onConfirm: () => removeLine(),
+			onConfirm: removeLine,
+			confirmation: true,
 		});
 	}
 

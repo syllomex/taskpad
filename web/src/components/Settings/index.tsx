@@ -1,7 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+
 import { useModal } from '../../store/modal';
 import { Page, usePage } from '../../store/pages';
+
 import downloadData, { uploadData } from '../../utils/backup';
 import { savePagesInStorage } from '../../utils/storage';
 
@@ -12,16 +15,16 @@ const Settings: React.FC = () => {
 	const [uploadContent, setUploadContent] = useState<Page[] | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	async function handleUpload() {
+	const handleUpload = () => {
 		if (!fileInputRef.current?.files) return;
 		if (!fileInputRef.current.files[0]) return;
 		uploadData(fileInputRef.current.files[0], setUploadContent);
-	}
+	};
 
 	function handleChange() {
 		openModal({
 			title: 'Restaurar Backup',
-			onConfirm: () => handleUpload(),
+			onConfirm: handleUpload,
 			content: (
 				<p>
 					Esta ação irá <strong>sobreescrever seus dados</strong>.
@@ -29,6 +32,7 @@ const Settings: React.FC = () => {
 					Tem certeza de que deseja continuar?
 				</p>
 			),
+			confirmation: true,
 		});
 	}
 
@@ -96,7 +100,6 @@ const Settings: React.FC = () => {
 
 const Container = styled.div`
 	width: 100%;
-	padding: 2rem 20%;
 `;
 
 export default Settings;

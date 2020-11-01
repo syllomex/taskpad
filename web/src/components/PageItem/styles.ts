@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import page from '../../assets/icons/page.svg';
 import pageActive from '../../assets/icons/page-active.svg';
 
+import { Link as RouterLink } from 'react-router-dom';
+
 export const Container = styled.div.attrs({ className: 'page-item' })`
 	cursor: pointer;
 
@@ -35,6 +37,14 @@ export const PageName = styled.span.attrs({ className: 'page-name' })`
 	font-size: 1.1rem;
 
 	font-family: 'Open Sans';
+`;
+
+export const Link = styled(RouterLink)`
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	outline: 0;
 `;
 
 export const PageIcon = styled.img.attrs({ src: page })``;

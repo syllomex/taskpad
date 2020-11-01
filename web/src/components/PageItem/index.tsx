@@ -1,7 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-import { ActivePageIcon, Container, PageIcon, PageName } from './styles';
+import { ActivePageIcon, Container, PageIcon, PageName, Link } from './styles';
 
 interface Props {
 	id: string;
@@ -23,7 +22,7 @@ const PageItem: React.FC<Props> = ({
 			onContextMenu={() => onRightClick(id)}
 			onClick={() => onClick(id)}
 		>
-			<Link key={id} to="/" style={{ textDecoration: 'none', display: "flex", alignItems: "center", width: '100%' }} tabIndex={-1}>
+			<Link key={id} to="/" tabIndex={-1}>
 				{active ? <ActivePageIcon /> : <PageIcon />}
 				<PageName>{title}</PageName>
 			</Link>

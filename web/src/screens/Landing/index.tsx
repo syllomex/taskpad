@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
+import Settings from '../../components/Settings';
+import { useModal } from '../../store/modal';
 
 import {
 	Container,
@@ -11,6 +13,8 @@ import {
 } from './styles';
 
 const Splash: React.FC = () => {
+	const { openModal } = useModal();
+
 	return (
 		<Container>
 			<SplashImage />
@@ -20,7 +24,17 @@ const Splash: React.FC = () => {
 			<SubTitle>
 				... ou utilize o atalho <CodeBox>Ctrl + N</CodeBox>
 			</SubTitle>
-			<Link to="/settings">Ver dicas e atalhos</Link>
+			<Link
+				onClick={() =>
+					openModal({
+						confirmation: false,
+						backButtonOnly: true,
+						content: <Settings />,
+					})
+				}
+			>
+				Ver dicas e atalhos
+			</Link>
 		</Container>
 	);
 };
