@@ -184,6 +184,22 @@ const usePage = () => {
 		if (activePage) saveActivePageInStorage(activePage.id);
 	};
 
+	const goToNextPage = () => {
+		if (!activePage) return;
+		const activeIndex = pages.findIndex((page) => page.id === activePage.id);
+
+		if (hasNextPage(pages, activeIndex))
+			selectPage(getNextPage(activeIndex, pages));
+	};
+
+	const goToPrevPage = () => {
+		if (!activePage) return;
+		const activeIndex = pages.findIndex((page) => page.id === activePage.id);
+
+		if (hasPreviousPage(pages, activeIndex))
+			selectPage(getPreviousPage(activeIndex, pages));
+	};
+
 	return {
 		pages,
 		setPages,
@@ -197,6 +213,8 @@ const usePage = () => {
 		setLineAboveId,
 		setLineToEnd,
 		saveAll,
+		goToNextPage,
+		goToPrevPage,
 	};
 };
 

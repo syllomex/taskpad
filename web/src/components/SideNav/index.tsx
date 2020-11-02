@@ -20,24 +20,37 @@ import settings from '../../assets/icons/settings.svg';
 import settingsActive from '../../assets/icons/settings-active.svg';
 
 const SideNav: React.FC = () => {
-	const { pages, activePage, selectPage, removePage } = usePage();
+	const {
+		pages,
+		activePage,
+		selectPage,
+		removePage,
+		goToNextPage,
+		goToPrevPage,
+	} = usePage();
 	const { openModal } = useModal();
 
 	const history = useHistory();
 
-	const newPageShortcutListener = (e: KeyboardEvent) => {
-		if (!e.ctrlKey) return;
-		if (e.key.toLowerCase() === 'n') openNewPageModal();
-		if (e.key.toLowerCase() === 'o') openSettingsModal();
-		if (e.key.toLowerCase() === 'h') history.push('/');
+	const shortcutListeners = (e: KeyboardEvent) => {
+		if (e.ctrlKey) {
+			if (e.key.toLowerCase() === 'n') openNewPageModal();
+			else if (e.key.toLowerCase() === 'o') openSettingsModal();
+			else if (e.key.toLowerCase() === 'h') history.push('/');
+		}
+
+		if (e.altKey) {
+			if (e.key === '1') goToPrevPage();
+			else if (e.key === '2') goToNextPage();
+		}
 	};
 
 	useEffect(() => {
-		window.addEventListener('keydown', newPageShortcutListener);
+		window.addEventListener('keydown', shortcutListeners);
 		return () => {
-			window.removeEventListener('keydown', newPageShortcutListener);
+			window.removeEventListener('keydown', shortcutListeners);
 		};
-	}, []);
+	}, [pages, activePage]);
 
 	const handleRightClick = (page_id: string) => {
 		openModal({
