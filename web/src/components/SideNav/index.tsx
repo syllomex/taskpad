@@ -27,7 +27,7 @@ const SideNav: React.FC = () => {
 		removePage,
 		goToNextPage,
 		goToPrevPage,
-		setPageToEnd
+		setPageToEnd,
 	} = usePage();
 	const { openModal } = useModal();
 
@@ -37,14 +37,18 @@ const SideNav: React.FC = () => {
 		if (e.ctrlKey) {
 			if (e.key.toLowerCase() === 'n') openNewPageModal();
 			else if (e.key.toLowerCase() === 'o') openSettingsModal();
-			else if (e.key.toLowerCase() === 'h') history.push('/');
-		}
-
-		if (e.altKey) {
-			if (e.key === '1') goToPrevPage();
-			else if (e.key === '2') goToNextPage();
+			else if (e.key.toLowerCase() === 'h') gotoHome();
+			else if (!e.shiftKey && e.key === 'Tab') goToNextPage();
+			if (e.shiftKey) {
+				if (e.key === 'Tab') goToPrevPage();
+			}
 		}
 	};
+
+	function gotoHome() {
+		history.push('/');
+		selectPage(null);
+	}
 
 	useEffect(() => {
 		window.addEventListener('keydown', shortcutListeners);

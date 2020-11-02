@@ -185,19 +185,36 @@ const usePage = () => {
 	};
 
 	const goToNextPage = () => {
-		if (!activePage) return;
+		if (!activePage) {
+			selectPage(pages[0]);
+			return;
+		}
+
 		const activeIndex = pages.findIndex((page) => page.id === activePage.id);
 
-		if (hasNextPage(pages, activeIndex))
+		if (hasNextPage(pages, activeIndex)) {
 			selectPage(getNextPage(activeIndex, pages));
+		} else {
+			if (pages[0]) selectPage(pages[0]);
+		}
 	};
 
 	const goToPrevPage = () => {
+		if (!activePage) {
+			selectPage(pages[0]);
+			return;
+		}
+
 		if (!activePage) return;
 		const activeIndex = pages.findIndex((page) => page.id === activePage.id);
 
-		if (hasPreviousPage(pages, activeIndex))
+		if (hasPreviousPage(pages, activeIndex)) {
 			selectPage(getPreviousPage(activeIndex, pages));
+		} else {
+			if (pages.length > 0) {
+				selectPage(pages[pages.length - 1]);
+			}
+		}
 	};
 
 	const setPageAbove = (page_index: number, above_index: number) => {

@@ -78,15 +78,17 @@ const Settings: React.FC = () => {
 			<br />
 			<h2>Comandos</h2>
 			<br />
-			<b>Alt + 1</b>: Navegar para página anterior
+			<b>Ctrl + Tab</b>: Navegar para próxima página
 			<br />
-			<b>Alt + 2</b>: Navegar para próxima página
+			<b>Ctrl + Shift + Tab</b>: Navegar para página anterior
 			<br />
 			<b>Ctrl + N</b>: Nova página
 			<br />
+			<b>Ctrl + W</b>: Fechar página atual
+			<br />
 			<b>Ctrl + H</b>: Volta ao início
 			<br />
-			<b>Ctrl + N</b>: Abre as configurações
+			<b>Ctrl + O</b>: Abre as configurações
 			<br />
 			<br />
 			<h4>
@@ -116,9 +118,9 @@ const Settings: React.FC = () => {
 			Clique com o <b>botão direito</b> em uma linha para removê-la
 			<br />
 			Dê um <b>clique duplo</b> em uma linha para editá-la
-			<br/>
+			<br />
 			<b>Clique e arraste</b> uma linha para movê-la
-			<br/>
+			<br />
 			<b>Clique e arraste</b> uma página para movê-la
 		</Container>
 	);
