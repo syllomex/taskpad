@@ -3,6 +3,7 @@ import { v4 } from 'uuid';
 
 import EditableTitle from '../../components/EditableTitle';
 import Line from '../../components/Line';
+import { useModal } from '../../store/modal';
 
 import { usePage } from '../../store/pages';
 
@@ -12,10 +13,13 @@ import { Container, EditableBox, Wrapper } from './styles';
 
 const Main: React.FC = () => {
 	const { setPageLines, activePage, setLineToEnd, setActivePage } = usePage();
+	const { openModal } = useModal();
+
 	const [highlightedLine, setHighlightedLine] = useState<number | null>(null);
 	const [editingLine, setEditingLine] = useState<number | null>(null);
 
 	const highlightedLineIndexRef = useRef<number | null>(null);
+	const editingLineIndexRef = useRef<number | null>(null);
 
 	const editableBoxRef = useRef<HTMLDivElement>(null);
 
@@ -59,7 +63,7 @@ const Main: React.FC = () => {
 		setLineToEnd(lineId);
 	}
 
-	function arrowsListener(e: KeyboardEvent) {
+	function keysListener(e: KeyboardEvent) {
 		if (!activePage) return;
 
 		const linesCount = activePage.content.length;
@@ -102,6 +106,36 @@ const Main: React.FC = () => {
 			onEditLine();
 		} else if (e.key === 'Escape') {
 			focusTextBox();
+		} else if (e.key === 'Delete') {
+			if (
+				highlightedLineIndexRef.current !== null &&
+				editingLineIndexRef.current === null
+			) {
+				editableBoxRef.current?.blur();
+				openModal({
+					title: 'Remover tarefa',
+					content: <p>Tem certeza de que deseja remover essa tarefa?</p>,
+					onConfirm: removeLine,
+					confirmation: true,
+				});
+			}
+		}
+	}
+
+	function removeLine() {
+		if (highlightedLineIndexRef.current !== null) {
+			if (!activePage) return;
+			const currentLines = [...activePage.content];
+			currentLines.splice(highlightedLineIndexRef.current, 1);
+
+			setPageLines(currentLines, activePage);
+
+			setEditingLine(null);
+			setHighlightedLine(null);
+			highlightedLineIndexRef.current = null;
+			editingLineIndexRef.current = null;
+
+			editableBoxRef.current?.focus();
 		}
 	}
 
@@ -111,9 +145,14 @@ const Main: React.FC = () => {
 				currentLine !== null &&
 				currentLine !== highlightedLineIndexRef.current
 			) {
+				editingLineIndexRef.current = highlightedLineIndexRef.current;
 				return highlightedLineIndexRef.current;
 			}
-			if (currentLine !== null) return null;
+			if (currentLine !== null) {
+				editingLineIndexRef.current = null;
+				return null;
+			}
+			editingLineIndexRef.current = highlightedLineIndexRef.current;
 			return highlightedLineIndexRef.current;
 		});
 	}
@@ -131,9 +170,9 @@ const Main: React.FC = () => {
 
 	useLayoutEffect(() => {
 		focusTextBox();
-		window.addEventListener('keydown', arrowsListener);
+		window.addEventListener('keydown', keysListener);
 		return () => {
-			window.removeEventListener('keydown', arrowsListener);
+			window.removeEventListener('keydown', keysListener);
 		};
 	}, [activePage]); // eslint-disable-line
 

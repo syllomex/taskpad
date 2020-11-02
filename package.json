@@ -1,6 +1,6 @@
 {
 	"name": "taskpad",
-	"version": "1.0.2",
+	"version": "1.0.8",
 	"description": "This is a kind of a notepad",
 	"main": "index.js",
 	"scripts": {

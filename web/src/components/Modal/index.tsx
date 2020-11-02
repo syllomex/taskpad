@@ -23,14 +23,17 @@ const Modal: React.FC = () => {
 
 			const isDisabledShortcut = !!last.disableShortcuts;
 
-			if (event.key.toLowerCase() === 's' && !isDisabledShortcut)
+			if (
+				(event.key.toLowerCase() === 's' || event.key === 'Enter') &&
+				!isDisabledShortcut
+			)
 				handleConfirm(last);
 			if (event.key.toLowerCase() === 'n' && !isDisabledShortcut)
 				handleCancel(last);
 		}
-		window.addEventListener('keydown', listener, false);
+		window.addEventListener('keyup', listener, false);
 		return () => {
-			window.removeEventListener('keydown', listener, false);
+			window.removeEventListener('keyup', listener, false);
 		};
 	}, [modals]);
 

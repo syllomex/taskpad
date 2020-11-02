@@ -82,13 +82,6 @@ const Settings: React.FC = () => {
 			<br />
 			<b>Alt + 2</b>: Navegar para próxima página
 			<br />
-			<b>Seta para Cima</b>: Navega para linha de cima
-			<br />
-			<b>Seta para Baixo</b>: Navega para linha de baixo
-			<br />
-			<b>Esc</b>: Foca o cursor na caixa de texto
-			<br />
-			<br />
 			<b>Ctrl + N</b>: Nova página
 			<br />
 			<b>Ctrl + H</b>: Volta ao início
@@ -96,9 +89,26 @@ const Settings: React.FC = () => {
 			<b>Ctrl + N</b>: Abre as configurações
 			<br />
 			<br />
-			<b>S (Janela de confirmação)</b>: Seleciona "SIM"
+			<h4>
+				<u>Na edição de página</u>
+			</h4>
+			<b>Seta para Cima</b>: Navega para linha de cima
 			<br />
-			<b>N (Janela de confirmação)</b>: Seleciona "NÃO"
+			<b>Seta para Baixo</b>: Navega para linha de baixo
+			<br />
+			<b>Enter</b>: Edita linha selecionada
+			<br />
+			<b>Delete</b>: Remove linha selecionada
+			<br />
+			<b>Esc</b>: Foca o cursor na caixa de texto
+			<br />
+			<br />
+			<h4>
+				<u>Na janela de confirmação</u>
+			</h4>
+			<b>S </b>ou <b>Enter</b>: Seleciona "SIM"
+			<br />
+			<b>N</b>: Seleciona "NÃO"
 			<br />
 			<br />
 			Clique com o <b>botão direito</b> em uma página para removê-la
@@ -106,6 +116,8 @@ const Settings: React.FC = () => {
 			Clique com o <b>botão direito</b> em uma linha para removê-la
 			<br />
 			Dê um <b>clique duplo</b> em uma linha para editá-la
+			<br/>
+			<b>Clique e arraste</b> uma linha para movê-la
 		</Container>
 	);
 };
