@@ -118,6 +118,8 @@ const Settings: React.FC = () => {
 			Dê um <b>clique duplo</b> em uma linha para editá-la
 			<br/>
 			<b>Clique e arraste</b> uma linha para movê-la
+			<br/>
+			<b>Clique e arraste</b> uma página para movê-la
 		</Container>
 	);
 };

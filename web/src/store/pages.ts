@@ -200,6 +200,25 @@ const usePage = () => {
 			selectPage(getPreviousPage(activeIndex, pages));
 	};
 
+	const setPageAbove = (page_index: number, above_index: number) => {
+		const currentPages = [...pages];
+
+		const offset = page_index < above_index ? 1 : 0;
+		const movingPage = currentPages.splice(page_index, 1)[0];
+		currentPages.splice(above_index - offset, 0, movingPage);
+
+		setPages(currentPages);
+		saveAll();
+	};
+
+	const setPageToEnd = (page_index: number) => {
+		const currentPages = [...pages];
+		const movingPage = currentPages.splice(page_index, 1)[0];
+		currentPages.push(movingPage);
+		setPages(currentPages);
+		saveAll();
+	};
+
 	return {
 		pages,
 		setPages,
@@ -215,6 +234,8 @@ const usePage = () => {
 		saveAll,
 		goToNextPage,
 		goToPrevPage,
+		setPageAbove,
+		setPageToEnd,
 	};
 };
 

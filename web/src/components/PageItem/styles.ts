@@ -5,7 +5,9 @@ import pageActive from '../../assets/icons/page-active.svg';
 
 import { Link as RouterLink } from 'react-router-dom';
 
-export const Container = styled.div.attrs({ className: 'page-item' })`
+export const Container = styled.div.attrs({ className: 'page-item' })<{
+	dragging?: boolean;
+}>`
 	cursor: pointer;
 
 	display: flex;
@@ -13,6 +15,10 @@ export const Container = styled.div.attrs({ className: 'page-item' })`
 
 	width: 100%;
 	padding: 0 32px;
+
+	box-shadow: ${(props) =>
+		props.dragging ? '0px -8px 6px -7px var(--primary)' : 'unset'};
+	padding-top: ${(props) => (props.dragging ? '12px' : 0)};
 
 	&:not(:last-child) {
 		padding-bottom: 1.2rem;

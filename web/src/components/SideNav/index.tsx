@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
+import React, { DragEvent, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 import PageItem from '../PageItem';
@@ -10,7 +10,7 @@ import Settings from '../Settings';
 import { usePage } from '../../store/pages';
 import { useModal } from '../../store/modal';
 
-import { Container, Footer, PagesContainer, Wrapper } from './styles';
+import { Container, Dropzone, Footer, PagesContainer, Wrapper } from './styles';
 
 import newPage from '../../assets/icons/new-page.svg';
 import newPageActive from '../../assets/icons/new-page-active.svg';
@@ -27,6 +27,7 @@ const SideNav: React.FC = () => {
 		removePage,
 		goToNextPage,
 		goToPrevPage,
+		setPageToEnd
 	} = usePage();
 	const { openModal } = useModal();
 
@@ -83,13 +84,20 @@ const SideNav: React.FC = () => {
 		});
 	};
 
+	function onDrop(e: DragEvent<HTMLDivElement>) {
+		e.preventDefault();
+		const dragging = parseInt(e.dataTransfer.getData('text/plain'), 10);
+		setPageToEnd(dragging);
+	}
+
 	return (
 		<Wrapper>
 			<Container>
 				<PagesContainer>
-					{pages.map((page) => (
+					{pages.map((page, index) => (
 						<PageItem
 							key={page.id}
+							index={index}
 							id={page.id}
 							title={page.title}
 							active={activePage?.id === page.id}
@@ -99,6 +107,7 @@ const SideNav: React.FC = () => {
 					))}
 				</PagesContainer>
 			</Container>
+			<Dropzone onDragOver={(e) => e.preventDefault()} onDrop={onDrop} />
 			<Footer>
 				<Link to="/" tabIndex={-1}>
 					<IconButton

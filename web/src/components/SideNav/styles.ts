@@ -11,6 +11,10 @@ export const Wrapper = styled.div`
 			align-items: center;
 		}
 
+		div.dropzone {
+			width: 300px;
+		}
+
 		div.container {
 			width: 300px;
 			overflow-y: auto;
@@ -28,7 +32,6 @@ export const Wrapper = styled.div`
 `;
 
 export const Container = styled.div.attrs({ className: 'container' })`
-	height: 100%;
 	width: 100px;
 
 	padding: 16px 0;
@@ -49,6 +52,13 @@ export const Container = styled.div.attrs({ className: 'container' })`
 	::-webkit-scrollbar-thumb {
 		background-color: var(--primary);
 	}
+`;
+
+export const Dropzone = styled.div.attrs({ className: 'dropzone' })`
+	display: flex;
+	flex: 1;
+	width: 100px;
+	background-color: var(--background-secondary);
 `;
 
 export const PagesContainer = styled.div`
