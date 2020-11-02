@@ -11,7 +11,7 @@ import Splash from '../Landing';
 import { Container, EditableBox, Wrapper } from './styles';
 
 const Main: React.FC = () => {
-	const { setPageLines, activePage, setLineToEnd } = usePage();
+	const { setPageLines, activePage, setLineToEnd, setActivePage } = usePage();
 
 	const editableBoxRef = useRef<HTMLDivElement>(null);
 
@@ -31,6 +31,8 @@ const Main: React.FC = () => {
 				activePage
 			);
 			editableBoxRef.current.innerText = '';
+		} else if (e.ctrlKey && e.key.toLowerCase() === 'w') {
+			setActivePage(null);
 		}
 	}
 
