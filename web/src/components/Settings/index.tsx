@@ -9,8 +9,8 @@ import downloadData, { uploadData } from '../../utils/backup';
 import { savePagesInStorage } from '../../utils/storage';
 
 const Settings: React.FC = () => {
-	const { openModal } = useModal();
-	const { setPages } = usePage();
+	const { openModal, closeModal } = useModal();
+	const { setPages, setActivePage } = usePage();
 
 	const [uploadContent, setUploadContent] = useState<Page[] | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -40,6 +40,8 @@ const Settings: React.FC = () => {
 		if (!uploadContent) return;
 		setPages(uploadContent);
 		savePagesInStorage(uploadContent);
+		setActivePage(uploadContent[0]);
+		closeModal();
 	}, [uploadContent]);
 
 	function handleClickBackup() {
@@ -79,6 +81,12 @@ const Settings: React.FC = () => {
 			<b>Alt + 1</b>: Navegar para página anterior
 			<br />
 			<b>Alt + 2</b>: Navegar para próxima página
+			<br />
+			<b>Seta para Cima</b>: Navega para linha de cima
+			<br />
+			<b>Seta para Baixo</b>: Navega para linha de baixo
+			<br />
+			<b>Esc</b>: Foca o cursor na caixa de texto
 			<br />
 			<br />
 			<b>Ctrl + N</b>: Nova página
