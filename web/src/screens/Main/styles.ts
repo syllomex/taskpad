@@ -14,6 +14,11 @@ export const Container = styled.div`
 
 	padding: 2rem 20%;
 
+	@media (max-width: 1280px) {
+		padding-left: 5%;
+		padding-right: 5%;
+	}
+
 	overflow-y: auto;
 	::-webkit-scrollbar {
 		width: 1px;
