@@ -3,7 +3,11 @@ import { usePage } from '../../store/pages';
 
 import { Title } from './styles';
 
-const EditableTitle: React.FC = () => {
+interface Props {
+	onFocus?: () => void;
+}
+
+const EditableTitle: React.FC<Props> = ({ onFocus }) => {
 	const { changeTitle, activePage } = usePage();
 
 	const titleRef = useRef<HTMLHeadingElement>(null);
@@ -47,6 +51,8 @@ const EditableTitle: React.FC = () => {
 		const focusListener = () => {
 			canceled.current = false;
 			previousTitle.current = titleRef.current?.innerText;
+
+			if (onFocus) onFocus();
 		};
 
 		titleRef.current?.addEventListener('focusin', focusListener);

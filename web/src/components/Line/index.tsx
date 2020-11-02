@@ -1,4 +1,10 @@
-import React, { DragEvent, FocusEvent, MouseEvent, useRef } from 'react';
+import React, {
+	DragEvent,
+	FocusEvent,
+	MouseEvent,
+	useEffect,
+	useRef,
+} from 'react';
 import { useModal } from '../../store/modal';
 import { Line as ILine, usePage } from '../../store/pages';
 
@@ -13,11 +19,25 @@ interface Props {
 	line: ILine;
 	index: number;
 	focusTextBox: Function;
+	highlighted?: boolean;
+	onClick?: React.Dispatch<any>;
+	editing?: boolean;
+	onSubmitEditing?: Function;
+	onDoubleClick?: Function;
 }
 
-const Line: React.FC<Props> = ({ line, index, focusTextBox }) => {
-	const lastLineRef = useRef<HTMLSpanElement>(null);
+const Line: React.FC<Props> = ({
+	line,
+	index,
+	focusTextBox,
+	highlighted,
+	onClick,
+	editing,
+	onSubmitEditing,
+	onDoubleClick,
+}) => {
 	const lineRef = useRef<HTMLDivElement>(null);
+	const lineContentRef = useRef<HTMLSpanElement>(null);
 
 	const isEditing = useRef(false);
 	const isDragging = useRef(false);
@@ -42,6 +62,10 @@ const Line: React.FC<Props> = ({ line, index, focusTextBox }) => {
 		if (e.key === 'Enter') {
 			e.preventDefault();
 			serializeLine();
+		} else if (e.key === 'Escape') {
+			e.preventDefault();
+			serializeLine();
+			focusTextBox();
 		}
 	}
 
@@ -49,10 +73,11 @@ const Line: React.FC<Props> = ({ line, index, focusTextBox }) => {
 		if (!activePage || !lineRef.current) return;
 
 		const text = lineRef.current.innerText;
+		if (text === '') return;
 		activePage.content[index].text = text;
 
-		lineRef.current.blur();
-		focusTextBox();
+		lineContentRef.current?.blur();
+		if (onSubmitEditing) onSubmitEditing();
 		saveAll();
 	}
 
@@ -103,6 +128,12 @@ const Line: React.FC<Props> = ({ line, index, focusTextBox }) => {
 	}
 
 	function handleBlurLine(e: FocusEvent<HTMLSpanElement>) {
+		if (!activePage) return;
+		if (!lineContentRef.current) return;
+		if (lineContentRef.current.innerText === '') {
+			const previousText = activePage.content[index].text as string;
+			lineContentRef.current.innerText = previousText;
+		}
 		isEditing.current = false;
 		e.currentTarget.contentEditable = 'false';
 		serializeLine();
@@ -111,6 +142,8 @@ const Line: React.FC<Props> = ({ line, index, focusTextBox }) => {
 	function handleDoubleClickLine(e: MouseEvent<HTMLSpanElement>) {
 		e.currentTarget.contentEditable = 'true';
 		e.currentTarget.focus();
+
+		if (onDoubleClick) onDoubleClick();
 	}
 
 	function handleDragStartLine(e: DragEvent<HTMLSpanElement>) {
@@ -152,6 +185,15 @@ const Line: React.FC<Props> = ({ line, index, focusTextBox }) => {
 		});
 	}
 
+	useEffect(() => {
+		if (editing) {
+			if (lineContentRef.current) {
+				lineContentRef.current.contentEditable = 'true';
+				lineContentRef.current.focus();
+			}
+		}
+	}, [editing]);
+
 	if (!activePage) return null;
 
 	return (
@@ -163,6 +205,8 @@ const Line: React.FC<Props> = ({ line, index, focusTextBox }) => {
 			id={line.id}
 			onDrop={onDrop}
 			onContextMenu={handleRightClickLine}
+			highlighted={highlighted}
+			onClick={onClick}
 		>
 			<CheckBox onClick={() => handleCheck(index)}>
 				{line.checked && <CheckIcon />}
@@ -178,7 +222,7 @@ const Line: React.FC<Props> = ({ line, index, focusTextBox }) => {
 				onKeyDown={(e) => handleLineKeyDown(e, index)}
 				onDragOver={(e) => e.preventDefault()}
 				onDragEnter={(e) => e.preventDefault()}
-				ref={index === activePage.content.length - 1 ? lastLineRef : null}
+				ref={lineContentRef}
 			>
 				{line.text}
 			</StyledLine>

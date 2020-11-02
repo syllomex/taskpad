@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import check from '../../assets/icons/check.svg';
 
-export const LineContainer = styled.div`
+export const LineContainer = styled.div<{ highlighted?: boolean }>`
 	display: flex;
 	align-items: center;
 
@@ -23,6 +23,12 @@ export const LineContainer = styled.div`
 		opacity: 0.6;
 		background-color: var(--background-secondary);
 	}
+
+	${(props) =>
+		props.highlighted
+			? `		opacity: 0.6;
+		background-color: var(--background-secondary);`
+			: ``}
 `;
 
 export const Line = styled.span.attrs({
