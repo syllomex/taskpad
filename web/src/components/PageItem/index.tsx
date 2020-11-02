@@ -37,7 +37,13 @@ const PageItem: React.FC<Props> = ({
 
 	function onDrop(e: DragEvent<HTMLDivElement>) {
 		e.preventDefault();
-		const dropped = parseInt(e.dataTransfer.getData('text/plain'), 10);
+		const data = e.dataTransfer.getData('text/plain');
+		if (data.length > 4) {
+			setDragging(false);
+			return;
+		}
+
+		const dropped = parseInt(data, 10);
 		const on = index;
 
 		setDragging(false);

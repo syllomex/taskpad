@@ -90,7 +90,10 @@ const SideNav: React.FC = () => {
 
 	function onDrop(e: DragEvent<HTMLDivElement>) {
 		e.preventDefault();
-		const dragging = parseInt(e.dataTransfer.getData('text/plain'), 10);
+		const data = e.dataTransfer.getData('text/plain');
+		if (data.length > 4) return;
+
+		const dragging = parseInt(data, 10);
 		setPageToEnd(dragging);
 	}
 
