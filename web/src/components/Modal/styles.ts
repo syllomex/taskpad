@@ -8,9 +8,14 @@ export const Container = styled.div`
 	bottom: 0;
 	right: 0;
 
-	width: 500px;
-	height: fit-content;
 	background-color: var(--background-primary);
+
+	width: fit-content;
+	min-width: 500px;
+
+	height: fit-content;
+	max-height: 80%;
+	overflow-y: auto;
 
 	border-radius: 4px;
 	padding: 32px;
@@ -28,6 +33,14 @@ export const Container = styled.div`
 			opacity: 1;
 			transform: scale(1);
 		}
+	}
+
+	::-webkit-scrollbar {
+		width: 1px;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background-color: var(--primary);
 	}
 `;
 
