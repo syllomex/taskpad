@@ -12,8 +12,8 @@ if (!lock) {
 } else {
 	function createWindow() {
 		window = new BrowserWindow({
-			minWidth: 1024,
-			minHeight: 768,
+			minWidth: 560,
+			minHeight: 560,
 			webPreferences: {
 				nodeIntegration: true,
 				enableRemoteModule: true,
