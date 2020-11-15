@@ -2,7 +2,11 @@ import { Page } from '../store/pages';
 import { v4 as uuid } from 'uuid';
 
 function generateFeaturesPage(version: string, features: string[]): Page {
-	let page: Page = { id: uuid(), title: `Features ${version}`, content: [] };
+	let page: Page = {
+		id: uuid(),
+		title: `Versão ${version} - Novas Features`,
+		content: [],
+	};
 
 	features.forEach((feat) => {
 		page.content.push({ id: uuid(), checked: false, text: feat });
@@ -11,17 +15,26 @@ function generateFeaturesPage(version: string, features: string[]): Page {
 	return page;
 }
 
+// Features 1.1.0
+// const features = [
+// 	'Reduzido o tamanho mínimo da janela',
+// 	'Navegação entre páginas com Ctrl + Tab',
+// 	'Selecionar linhas com mouse ou setas do teclado',
+// 	'Páginas arrastáveis',
+// 	'Diversos novos atalhos (veja em configurações)',
+// ];
+
 function makeFeaturesPage(pages: Page[]): Page[] {
-	const version = '1.1.0';
+	const version = '1.1.5';
 	const alreadyShown = localStorage.getItem(`feature.${version}`);
 	if (alreadyShown) return pages;
 
 	const features = [
+		'Adicionado "Modo Minimal" (veja em Configurações)',
 		'Reduzido o tamanho mínimo da janela',
-		'Navegação entre páginas com Ctrl + Tab',
-		'Selecionar linhas com mouse ou setas do teclado',
-		'Páginas arrastáveis',
-		'Diversos novos atalhos (veja em configurações)',
+		'Arquivos de backup agora geram datas automaticamente',
+		'Utilize o comando Ctrl + Shift + C para copiar todo o conteúdo de uma página',
+		'Navegação entre linhas com as setas do teclado agora fica desabilitada quando está digitando',
 	];
 
 	const featuresPage = generateFeaturesPage(version, features);
