@@ -12,7 +12,13 @@ import Splash from '../Landing';
 import { Container, EditableBox, Wrapper } from './styles';
 
 const Main: React.FC = () => {
-	const { setPageLines, activePage, setLineToEnd, setActivePage, copyActivePage } = usePage();
+	const {
+		setPageLines,
+		activePage,
+		setLineToEnd,
+		setActivePage,
+		copyActivePage,
+	} = usePage();
 	const { openModal } = useModal();
 
 	const [highlightedLine, setHighlightedLine] = useState<number | null>(null);
@@ -20,6 +26,8 @@ const Main: React.FC = () => {
 
 	const highlightedLineIndexRef = useRef<number | null>(null);
 	const editingLineIndexRef = useRef<number | null>(null);
+
+	const isTyping = useRef(false);
 
 	const editableBoxRef = useRef<HTMLDivElement>(null);
 
@@ -68,6 +76,8 @@ const Main: React.FC = () => {
 
 		const linesCount = activePage.content.length;
 		if (e.key === 'ArrowDown') {
+			if (isTyping.current) return;
+
 			e.preventDefault();
 
 			if (highlightedLineIndexRef.current === null) return;
@@ -90,6 +100,8 @@ const Main: React.FC = () => {
 				return index;
 			});
 		} else if (e.key === 'ArrowUp') {
+			if (isTyping.current) return;
+
 			e.preventDefault();
 			editableBoxRef.current?.blur();
 
@@ -168,8 +180,14 @@ const Main: React.FC = () => {
 	}
 
 	function handleFocusEditableBox() {
+		isTyping.current = true;
+
 		setHighlightedLine(null);
 		highlightedLineIndexRef.current = null;
+	}
+
+	function handleBlur() {
+		isTyping.current = false;
 	}
 
 	useLayoutEffect(() => {
@@ -199,6 +217,8 @@ const Main: React.FC = () => {
 							}}
 							editing={editingLine === index}
 							onDoubleClick={onEditLine}
+							onBlur={handleBlur}
+							onFocus={() => (isTyping.current = true)}
 						/>
 					))}
 
@@ -209,6 +229,7 @@ const Main: React.FC = () => {
 							onKeyDown={handleKeyDown}
 							onDrop={handleDrop}
 							onFocus={handleFocusEditableBox}
+							onBlur={handleBlur}
 						/>
 					)}
 				</Container>

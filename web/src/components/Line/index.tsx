@@ -24,6 +24,8 @@ interface Props {
 	editing?: boolean;
 	onSubmitEditing?: Function;
 	onDoubleClick?: Function;
+	onBlur?: Function;
+	onFocus?: Function;
 }
 
 const Line: React.FC<Props> = ({
@@ -35,6 +37,8 @@ const Line: React.FC<Props> = ({
 	editing,
 	onSubmitEditing,
 	onDoubleClick,
+	onBlur,
+	onFocus,
 }) => {
 	const lineRef = useRef<HTMLDivElement>(null);
 	const lineContentRef = useRef<HTMLSpanElement>(null);
@@ -125,6 +129,8 @@ const Line: React.FC<Props> = ({
 	function handleFocusLine() {
 		isEditing.current = true;
 		document.execCommand('selectAll', false, undefined);
+
+		onFocus && onFocus();
 	}
 
 	function handleBlurLine(e: FocusEvent<HTMLSpanElement>) {
@@ -137,6 +143,8 @@ const Line: React.FC<Props> = ({
 		isEditing.current = false;
 		e.currentTarget.contentEditable = 'false';
 		serializeLine();
+
+		onBlur && onBlur();
 	}
 
 	function handleDoubleClickLine(e: MouseEvent<HTMLSpanElement>) {

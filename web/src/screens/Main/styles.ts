@@ -36,7 +36,7 @@ export const EditableBox = styled.div.attrs({
 	min-height: 100%;
 	width: 100%;
 
-	padding: 0.3rem 3rem;
+	padding: 0.6rem 3rem 0.3rem;
 
 	&:focus {
 		outline: 0;
