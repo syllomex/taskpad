@@ -33,9 +33,10 @@ export const PageItem = styled.div<{ active?: boolean }>`
 	height: 16px;
 	border-radius: 50%;
 
-	background-color: var(--background-primary-reverse);
+	background-color: ${(props) =>
+		props.active ? 'var(--primary)' : 'var(--background-primary-reverse)'};
 
-	opacity: ${(props) => (props.active ? 0.7 : 0.2)};
+	opacity: ${(props) => (props.active ? 0.9 : 0.2)};
 
 	&:hover {
 		opacity: 0.4;

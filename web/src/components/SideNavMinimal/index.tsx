@@ -113,7 +113,7 @@ const SideNavMinimal: React.FC = () => {
 const ButtonStyle = {
 	width: '24px',
 	height: '24px',
-	marginTop: '12px'
+	marginTop: '12px',
 };
 
 export default SideNavMinimal;
