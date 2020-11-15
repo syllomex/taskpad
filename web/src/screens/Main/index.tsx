@@ -191,7 +191,6 @@ const Main: React.FC = () => {
 	}
 
 	useLayoutEffect(() => {
-		focusTextBox();
 		window.addEventListener('keydown', keysListener);
 		return () => {
 			window.removeEventListener('keydown', keysListener);

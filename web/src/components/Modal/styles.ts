@@ -11,7 +11,8 @@ export const Container = styled.div`
 	background-color: var(--background-primary);
 
 	width: fit-content;
-	min-width: 500px;
+	min-width: 300px;
+	max-width: 90%;
 
 	height: fit-content;
 	max-height: 80%;

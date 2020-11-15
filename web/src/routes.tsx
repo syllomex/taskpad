@@ -3,6 +3,7 @@ import { HashRouter, Switch, Route } from 'react-router-dom';
 
 import Settings from './components/Settings';
 import SideNav from './components/SideNav';
+import SideNavMinimal from './components/SideNavMinimal';
 
 // Screens
 import Main from './screens/Main';
@@ -14,6 +15,7 @@ export const Routes: React.FC = () => {
 			<Switch>
 				<Wrapper>
 					<SideNav />
+					<SideNavMinimal />
 					<Route path="/" exact component={Main} />
 					<Route path="/settings" exact component={Settings} />
 				</Wrapper>

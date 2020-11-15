@@ -18,6 +18,7 @@ import home from '../../assets/icons/home.svg';
 import homeActive from '../../assets/icons/home-active.svg';
 import settings from '../../assets/icons/settings.svg';
 import settingsActive from '../../assets/icons/settings-active.svg';
+import { useConfig } from '../../store/config';
 
 const SideNav: React.FC = () => {
 	const {
@@ -30,6 +31,7 @@ const SideNav: React.FC = () => {
 		setPageToEnd,
 	} = usePage();
 	const { openModal } = useModal();
+	const { config } = useConfig();
 
 	const history = useHistory();
 
@@ -98,7 +100,7 @@ const SideNav: React.FC = () => {
 	}
 
 	return (
-		<Wrapper>
+		<Wrapper minimal={config.minimal}>
 			<Container>
 				<PagesContainer>
 					{pages.map((page, index) => (

@@ -59,6 +59,8 @@ export const CheckBox = styled.div`
 	justify-content: center;
 	align-items: center;
 
+	flex-shrink: 0;
+
 	background-color: var(--background-primary-reverse);
 
 	width: 1rem;

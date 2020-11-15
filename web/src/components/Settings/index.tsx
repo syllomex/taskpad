@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { useConfig } from '../../store/config';
 
 import { useModal } from '../../store/modal';
 import { Page, usePage } from '../../store/pages';
@@ -11,6 +12,8 @@ import { savePagesInStorage } from '../../utils/storage';
 const Settings: React.FC = () => {
 	const { openModal, closeModal } = useModal();
 	const { setPages, setActivePage } = usePage();
+
+	const { config, setConfig } = useConfig();
 
 	const [uploadContent, setUploadContent] = useState<Page[] | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -55,6 +58,21 @@ const Settings: React.FC = () => {
 	return (
 		<Container>
 			<h1>Configurações</h1>
+			<h2 style={{ marginTop: '2rem' }}>Modo Minimal</h2>
+			<p style={{ marginTop: '1rem', marginBottom: '.3rem' }}>
+				Se você utiliza o TaskPad em uma janela pequena (ou prefere um design
+				mais limpo), experimente ativar essa opção!
+			</p>
+			<input
+				type="checkbox"
+				defaultChecked={config.minimal}
+				onChange={(event) =>
+					setConfig({ ...config, minimal: event.target.checked })
+				}
+			/>
+			<span style={{ marginLeft: 12 }}>
+				<b>Modo Minimal</b>
+			</span>
 			<h2 style={{ marginTop: '2rem' }}>Backup e Restauração</h2>
 			<p style={{ marginTop: '1rem', marginBottom: '.3rem' }}>
 				Selecione um arquivo para restaurar suas páginas
@@ -82,15 +100,16 @@ const Settings: React.FC = () => {
 			<br />
 			<b>Ctrl + Shift + Tab</b>: Navegar para página anterior
 			<br />
-			<br/>
-			<b>Ctrl + Shift + C</b>: Copia todo o conteúdo da página para a área de transferência
 			<br />
-			<br/>
+			<b>Ctrl + Shift + C</b>: Copia todo o conteúdo da página para a área de
+			transferência
+			<br />
+			<br />
 			<b>Ctrl + N</b>: Nova página
 			<br />
 			<b>Ctrl + W</b>: Fechar página atual
 			<br />
-			<br/>
+			<br />
 			<b>Ctrl + H</b>: Volta ao início
 			<br />
 			<b>Ctrl + O</b>: Abre as configurações

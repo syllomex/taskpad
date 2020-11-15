@@ -12,8 +12,8 @@ if (!lock) {
 } else {
 	function createWindow() {
 		window = new BrowserWindow({
-			minWidth: 560,
-			minHeight: 560,
+			minWidth: 450,
+			minHeight: 450,
 			webPreferences: {
 				nodeIntegration: true,
 				enableRemoteModule: true,
@@ -33,7 +33,7 @@ if (!lock) {
 
 		if (isDev) {
 			window.loadURL('http://localhost:25554');
-			window.maximize();
+			// window.maximize();
 			window.webContents.openDevTools();
 		} else {
 			const webPath = path.join(__dirname, 'web', 'build', 'index.html');
