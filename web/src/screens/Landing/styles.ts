@@ -50,3 +50,9 @@ export const Link = styled.span`
 
 	user-select: none;
 `;
+
+export const TextContainer = styled.div`
+	text-align: center;
+
+	padding: 0 10% 16px;
+`;

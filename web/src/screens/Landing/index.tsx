@@ -10,6 +10,7 @@ import {
 	SubTitle,
 	CodeBox,
 	Link,
+	TextContainer,
 } from './styles';
 
 const Splash: React.FC = () => {
@@ -18,23 +19,25 @@ const Splash: React.FC = () => {
 	return (
 		<Container>
 			<SplashImage />
-			<Title>
-				Utilize o menu à esquerda para criar páginas e navegar entre elas!
-			</Title>
-			<SubTitle>
-				... ou utilize o atalho <CodeBox>Ctrl + N</CodeBox>
-			</SubTitle>
-			<Link
-				onClick={() =>
-					openModal({
-						confirmation: false,
-						backButtonOnly: true,
-						content: <Settings />,
-					})
-				}
-			>
-				Ver dicas e atalhos
-			</Link>
+			<TextContainer>
+				<Title>
+					Utilize o menu à esquerda para criar páginas e navegar entre elas!
+				</Title>
+				<SubTitle>
+					... ou utilize o atalho <CodeBox>Ctrl + N</CodeBox>
+				</SubTitle>
+				<Link
+					onClick={() =>
+						openModal({
+							confirmation: false,
+							backButtonOnly: true,
+							content: <Settings />,
+						})
+					}
+				>
+					Ver dicas e atalhos
+				</Link>
+			</TextContainer>
 		</Container>
 	);
 };

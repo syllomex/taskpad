@@ -82,15 +82,18 @@ const Settings: React.FC = () => {
 			<br />
 			<b>Ctrl + Shift + Tab</b>: Navegar para página anterior
 			<br />
+			<br/>
+			<b>Ctrl + Shift + C</b>: Copia todo o conteúdo da página para a área de transferência
+			<br />
+			<br/>
 			<b>Ctrl + N</b>: Nova página
 			<br />
 			<b>Ctrl + W</b>: Fechar página atual
 			<br />
+			<br/>
 			<b>Ctrl + H</b>: Volta ao início
 			<br />
 			<b>Ctrl + O</b>: Abre as configurações
-			<br />
-			<b>Ctrl + Shift + C</b>: Copia todo o conteúdo da página para a área de transferência
 			<br />
 			<br />
 			<h4>
