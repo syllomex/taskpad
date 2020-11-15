@@ -90,6 +90,8 @@ const Settings: React.FC = () => {
 			<br />
 			<b>Ctrl + O</b>: Abre as configurações
 			<br />
+			<b>Ctrl + Shift + C</b>: Copia todo o conteúdo da página para a área de transferência
+			<br />
 			<br />
 			<h4>
 				<u>Na edição de página</u>

@@ -236,6 +236,29 @@ const usePage = () => {
 		saveAll();
 	};
 
+	const copyActivePage = () => {
+		if (!activePage) return;
+		let pageText = activePage.title + '\n';
+
+		activePage.content.forEach((line) => {
+			pageText += '\n';
+			pageText += (line.checked ? '[x]' : '[ ]') + ' ';
+			pageText += line.text;
+		});
+
+		const tmpElement = document.createElement('textarea');
+		tmpElement.value = pageText;
+		tmpElement.style.position = 'absolute';
+		tmpElement.style.opacity = '0';
+		tmpElement.style.top = '-99999px';
+		tmpElement.style.left = '-99999px';
+
+		document.body.appendChild(tmpElement);
+		tmpElement.select();
+		document.execCommand('copy');
+		tmpElement.remove();
+	};
+
 	return {
 		pages,
 		setPages,
@@ -253,6 +276,7 @@ const usePage = () => {
 		goToPrevPage,
 		setPageAbove,
 		setPageToEnd,
+		copyActivePage,
 	};
 };
 

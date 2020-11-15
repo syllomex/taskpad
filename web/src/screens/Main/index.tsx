@@ -12,7 +12,7 @@ import Splash from '../Landing';
 import { Container, EditableBox, Wrapper } from './styles';
 
 const Main: React.FC = () => {
-	const { setPageLines, activePage, setLineToEnd, setActivePage } = usePage();
+	const { setPageLines, activePage, setLineToEnd, setActivePage, copyActivePage } = usePage();
 	const { openModal } = useModal();
 
 	const [highlightedLine, setHighlightedLine] = useState<number | null>(null);
@@ -119,6 +119,10 @@ const Main: React.FC = () => {
 					confirmation: true,
 				});
 			}
+		}
+
+		if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') {
+			copyActivePage();
 		}
 	}
 
