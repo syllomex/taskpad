@@ -37,6 +37,8 @@ const Splash: React.FC = () => {
 				>
 					Ver dicas e atalhos
 				</Link>
+
+				<small style={{opacity: 0.3, display: 'block', marginTop: '1rem'}}>1.1.6</small>
 			</TextContainer>
 		</Container>
 	);
