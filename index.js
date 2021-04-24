@@ -1,11 +1,31 @@
-const { app, BrowserWindow, Tray, Menu } = require('electron');
+const {
+	app,
+	BrowserWindow,
+	Tray,
+	Menu,
+	autoUpdater,
+	dialog,
+} = require('electron');
+
+require('update-electron-app')();
+
 const path = require('path');
 const isDev = require('electron-is-dev');
+
+const server = 'https://taskpad-syllomex.vercel.app';
+const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
+autoUpdater.setFeedURL({ url: feed });
 
 let window = null;
 let tray = null;
 
 const lock = app.requestSingleInstanceLock();
+
+if (!isDev) {
+	setInterval(() => {
+		autoUpdater.checkForUpdates();
+	}, 60000);
+}
 
 if (!lock) {
 	app.quit();
@@ -92,4 +112,29 @@ if (!lock) {
 			createWindow();
 		}
 	});
+
+	if (!isDev) {
+		autoUpdater.on(
+			'update-downloaded',
+			(event, releaseNotes, releaseName, releaseDate, updateURL) => {
+				const dialogOpts = {
+					type: 'info',
+					buttons: ['Restart', 'Later'],
+					title: 'Application Update',
+					message: process.platform === 'win32' ? releaseNotes : releaseName,
+					detail:
+						'A new version has been downloaded. Restart the application to apply the updates.',
+				};
+
+				dialog.showMessageBox(dialogOpts).then((returnValue) => {
+					if (returnValue.response === 0) autoUpdater.quitAndInstall();
+				});
+			}
+		);
+
+		autoUpdater.on('error', (message) => {
+			console.error('There was a problem updating the application');
+			console.error(message);
+		});
+	}
 }
